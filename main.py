@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 
 # variables
 window_width = 1000
@@ -14,6 +15,8 @@ root = Tk()
 root.title("Text Editor")
 
 root.geometry(str(window_width) + "x" + str(window_height))
+
+root.iconbitmap("Editor Icon.ico")
 
 frame = Frame(root)
 frame.pack(fill=BOTH, expand=YES, pady=5)
