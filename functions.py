@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter import font
+from enum import Enum
+from re import sub
 
 # warnings
 
@@ -103,6 +105,23 @@ def delete_text(text:Text):
         text.delete("sel.first", "sel.last")
 
 # font functions
+FONT = Enum('Name', [('Arial', 1), ('Comic_Sans_MS', 2), ('Courier_New', 3), ('Georgia', 4), ('Impact', 5), ('Times_New_Roman', 6)])
+
+selected_font = ""
+font_size = 16
+
+def change_font(text:Text, f:FONT = selected_font, size:int = font_size):
+    name = str(f)[str(f).index(".")+1:].replace("_", " ")
+
+    global selected_font
+    global font_size
+    selected_font = name
+    font_size = size
+
+    cf = font.Font(family=name, size=size)
+    text.configure(font=cf)
+    text.master.mainloop()
+
 def bold_text(text:Text):
     bold_font = font.Font(text, text.cget("font"))
     bold_font.configure(weight="bold")
@@ -113,7 +132,6 @@ def bold_text(text:Text):
         text.tag_remove("bold", "sel.first", "sel.last")
     else:
         text.tag_add("bold", "sel.first", "sel.last")
-
 
 def italic_text(text:Text):
     italic_font = font.Font(text, text.cget("font"))
