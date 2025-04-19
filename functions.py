@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import font
 from enum import Enum
-from re import sub
+import json
 
 # warnings
 
@@ -109,24 +109,39 @@ def delete_text(text:Text):
 # font functions
 FONT = Enum('Name', [('Arial', 1), ('Comic_Sans_MS', 2), ('Courier_New', 3), ('Georgia', 4), ('Impact', 5), ('Times_New_Roman', 6)])
 
-selected_font = ""
-font_size = 16
+def save_font(font:FONT, size:int):
+    font_preferences = {
+        "font_type": str(font),
+        "font_size": size,
+    }
+    with open('preferences.json', 'w') as file:
+        json.dump(font_preferences, file)
 
-def change_font(text:Text, f:FONT = selected_font, size:int = font_size):
+def load_font_type() -> FONT:
+    with open('preferences.json', 'r') as file:
+        loaded = json.load(file)
+    return FONT[str(loaded["font_type"])[str(loaded["font_type"]).index(".")+1:]]
+
+def load_font_size() -> int:
+    with open('preferences.json', 'r') as file:
+        loaded = json.load(file)
+    return loaded["font_size"]
+
+def change_font(text:Text, f:FONT = None, size:int = 0, mainloop:bool = True):
+    if f == None: f = load_font_type()
+    if size == 0: size = load_font_size()
+
     name = str(f)[str(f).index(".")+1:].replace("_", " ")
 
-    global selected_font
-    global font_size
-    selected_font = name
-    font_size = size
+    save_font(f, size)
 
     cf = font.Font(family=name, size=size)
     text.configure(font=cf)
 
     text.tag_remove("bold", "1.0", END)
     text.tag_remove("italic", "1.0", END)
-    
-    text.master.mainloop()
+
+    if mainloop: text.master.mainloop()
 
 def bold_text(text:Text):
     bold_font = font.Font(text, text.cget("font"))

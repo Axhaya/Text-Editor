@@ -76,6 +76,7 @@ menu.add_cascade(label="Font", menu=font_menu)
 
 font_change_menu = Menu(font_menu, tearoff=False)
 font_menu.add_cascade(label="Change", menu=font_change_menu)
+
 font_change_menu.add_command(label="Arial", command= lambda: f.change_font(text, f.FONT.Arial))
 font_change_menu.add_command(label="Comic Sans", command= lambda: f.change_font(text, f.FONT.Comic_Sans_MS))
 font_change_menu.add_command(label="Courier New", command= lambda: f.change_font(text, f.FONT.Courier_New))
@@ -104,5 +105,8 @@ caesar_menu.add_command(label="Encrypt", command= lambda: e.create_caesar(root, 
 caesar_menu.add_command(label="Decrypt", command= lambda: e.create_caesar(root, text, e.DIRECTION.Decryption))
 
 #encryption_menu.add_command(label="Rail Fence")
+
+# basic function calls
+f.change_font(text, mainloop=False)
 
 root.mainloop()
