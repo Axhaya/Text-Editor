@@ -143,6 +143,43 @@ def change_font(text:Text, f:FONT = None, size:int = 0, mainloop:bool = True):
 
     if mainloop: text.master.mainloop()
 
+def font_size_widget(text:Text):
+    widget = SizeWidget(text.master, text)
+
+class SizeWidget(Toplevel):
+    def __init__(self, parent:Tk, text:Text):
+        super().__init__(master=parent, name="font size")
+        self.text = text
+
+        self.title("Custom Font Size")
+        self.geometry("350x100")
+
+        self.frame = Frame(self)
+        self.frame.pack(fill=BOTH, expand=YES)
+
+        self.show_text = Label(self.frame, text="Input desired font size")
+        self.show_text.pack()
+
+        self.entry = Entry(self.frame, validate="all", validatecommand=((self.register(self.callback)), '%P'))
+        self.entry.pack()
+
+        self.button = Button(self.frame, text="Confirm", command=self.confirm)
+        self.button.pack()
+
+        self.mainloop()
+    
+    def callback(self, p:chr): 
+        return str.isdigit(p) or p == ""
+
+    def confirm(self):
+        if self.entry.get() == "" or int(self.entry.get())< 1:
+            return
+        input = int(self.entry.get())
+
+        self.destroy()
+
+        change_font(self.text, size=input)
+
 def bold_text(text:Text):
     bold_font = font.Font(text, text.cget("font"))
     bold_font.configure(weight="bold")

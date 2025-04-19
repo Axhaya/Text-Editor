@@ -84,6 +84,17 @@ font_change_menu.add_command(label="Georgia", command= lambda: f.change_font(tex
 font_change_menu.add_command(label="Impact", command= lambda: f.change_font(text, f.FONT.Impact))
 font_change_menu.add_command(label="Times New Roman", command= lambda: f.change_font(text, f.FONT.Times_New_Roman))
 
+font_size_menu = Menu(font_menu, tearoff=False)
+font_menu.add_cascade(label="Size", menu=font_size_menu)
+
+font_size_menu.add_command(label="Custom", command= lambda: f.font_size_widget(text))
+"""
+font_size_menu.add_separator()
+
+for i in range(8, 48, 2):
+    font_size_menu.add_command(label=i, command= lambda: f.change_font(text, size=int(str(i))))
+"""
+
 font_menu.add_separator()
 font_menu.add_command(label="Bold", command= lambda: f.bold_text(text), accelerator="Alt+B")
 font_menu.add_command(label="Italic", command= lambda: f.italic_text(text), accelerator="Alt+I")
