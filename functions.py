@@ -30,8 +30,9 @@ def new_file(root:Tk, text:Text, status:Label = Label()):
 
 def open_file(root:Tk, text:Text, status:Label = Label()):
     file_path = filedialog.askopenfilename(initialdir="", title="Open File", filetypes=(("Text Files", "*.txt"),
-                                                                                    ("Python Files", "*.py"),
-                                                                                    ("All Files", "*.*")))
+                                                                                        ("Python Files", "*.py"),
+                                                                                        ("Python Files", "*.pyw"),
+                                                                                        ("All Files", "*.*")))
     global current_file_path
     if file_path:
         current_file_path = file_path
@@ -60,8 +61,9 @@ def save_file(root:Tk, text:Text, status:Label = Label()):
 
 def save_as_file(root:Tk, text:Text, status:Label = Label()):
     file_path = filedialog.asksaveasfilename(defaultextension=".*", initialdir="", title="Save File", filetypes=(("Text Files", "*.txt"),
-                                                                                                            ("Python Files", "*.py"),
-                                                                                                            ("All Files", "*.*")))
+                                                                                                                ("Python Files", "*.py"),
+                                                                                                                ("Python Files", "*.pyw"),
+                                                                                                                ("All Files", "*.*")))
     if file_path:
         set_status(root, status, file_path, "Saved as:")
 
@@ -120,6 +122,10 @@ def change_font(text:Text, f:FONT = selected_font, size:int = font_size):
 
     cf = font.Font(family=name, size=size)
     text.configure(font=cf)
+
+    text.tag_remove("bold", "1.0", END)
+    text.tag_remove("italic", "1.0", END)
+    
     text.master.mainloop()
 
 def bold_text(text:Text):
