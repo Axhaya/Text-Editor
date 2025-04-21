@@ -3,8 +3,19 @@ from tkinter import filedialog
 from tkinter import font
 from enum import Enum
 import json
+import os
+import sys
 
 # warnings
+
+# utility functions
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # widget functions
 def set_status(root:Tk, status:Label, text:str, prefix:str="", suffix:str=""):
@@ -114,16 +125,16 @@ def save_font(font:FONT, size:int):
         "font_type": str(font),
         "font_size": size,
     }
-    with open('preferences.json', 'w') as file:
+    with open(resource_path('preferences.json'), 'w') as file:
         json.dump(font_preferences, file)
 
 def load_font_type() -> FONT:
-    with open('preferences.json', 'r') as file:
+    with open(resource_path('preferences.json'), 'r') as file:
         loaded = json.load(file)
     return FONT[str(loaded["font_type"])[str(loaded["font_type"]).index(".")+1:]]
 
 def load_font_size() -> int:
-    with open('preferences.json', 'r') as file:
+    with open(resource_path('preferences.json'), 'r') as file:
         loaded = json.load(file)
     return loaded["font_size"]
 

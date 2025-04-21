@@ -16,8 +16,6 @@ root.title("Text Editor")
 
 root.geometry(str(window_width) + "x" + str(window_height))
 
-root.iconbitmap("Editor Icon.ico")
-
 frame = Frame(root)
 frame.pack(fill=BOTH, expand=YES, pady=5)
 
@@ -39,6 +37,9 @@ root.config(menu=menu)
 ## Menubar
 import functions as f # import in this line to prevent unwanted second window
 import encryptions as e
+
+# Icon
+root.iconbitmap(f.resource_path("Editor Icon.ico"))
 
 # File Menu
 file_menu = Menu(menu, tearoff=False)
