@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import font
 from PIL import Image, ImageTk
+from functools import partial
 
 # variables
 window_width = 1000
@@ -88,12 +89,11 @@ font_size_menu = Menu(font_menu, tearoff=False)
 font_menu.add_cascade(label="Size", menu=font_size_menu)
 
 font_size_menu.add_command(label="Custom", command= lambda: f.font_size_widget(text))
-"""
+
 font_size_menu.add_separator()
 
 for i in range(8, 48, 2):
-    font_size_menu.add_command(label=i, command= lambda: f.change_font(text, size=int(str(i))))
-"""
+    font_size_menu.add_command(label=i, command= partial(f.change_font, text, size=i))
 
 font_menu.add_separator()
 font_menu.add_command(label="Bold", command= lambda: f.bold_text(text), accelerator="Alt+B")
