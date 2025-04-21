@@ -1,11 +1,11 @@
 from tkinter import *
+from tkinter import font
 from PIL import Image, ImageTk
+from functools import partial
 
 # variables
 window_width = 1000
 window_height = 800
-
-selected_font = ("Helvetica", 16)
 
 select_background = "black"
 select_foreground = "white"
@@ -24,7 +24,7 @@ frame.pack(fill=BOTH, expand=YES, pady=5)
 text_scroll = Scrollbar(frame)
 text_scroll.pack(side=RIGHT, fill=Y)
                                                   
-text = Text(frame, width=100, height=25, font=selected_font, selectbackground=select_background, 
+text = Text(frame, width=100, height=25, selectbackground=select_background, 
             selectforeground=select_foreground, undo=True, yscrollcommand=text_scroll.set)
 text.pack(fill=BOTH, expand=YES)
 
@@ -74,8 +74,28 @@ root.bind('<Control-Key-v>', hotkey_paste)
 # Font Menu
 font_menu = Menu(menu, tearoff=False)
 menu.add_cascade(label="Font", menu=font_menu)
-#font_menu.add_command(label="Change")
-#font_menu.add_separator()
+
+font_change_menu = Menu(font_menu, tearoff=False)
+font_menu.add_cascade(label="Change", menu=font_change_menu)
+
+font_change_menu.add_command(label="Arial", command= lambda: f.change_font(text, f.FONT.Arial))
+font_change_menu.add_command(label="Comic Sans", command= lambda: f.change_font(text, f.FONT.Comic_Sans_MS))
+font_change_menu.add_command(label="Courier New", command= lambda: f.change_font(text, f.FONT.Courier_New))
+font_change_menu.add_command(label="Georgia", command= lambda: f.change_font(text, f.FONT.Georgia))
+font_change_menu.add_command(label="Impact", command= lambda: f.change_font(text, f.FONT.Impact))
+font_change_menu.add_command(label="Times New Roman", command= lambda: f.change_font(text, f.FONT.Times_New_Roman))
+
+font_size_menu = Menu(font_menu, tearoff=False)
+font_menu.add_cascade(label="Size", menu=font_size_menu)
+
+font_size_menu.add_command(label="Custom", command= lambda: f.font_size_widget(text))
+
+font_size_menu.add_separator()
+
+for i in range(8, 48, 2):
+    font_size_menu.add_command(label=i, command= partial(f.change_font, text, size=i))
+
+font_menu.add_separator()
 font_menu.add_command(label="Bold", command= lambda: f.bold_text(text), accelerator="Alt+B")
 font_menu.add_command(label="Italic", command= lambda: f.italic_text(text), accelerator="Alt+I")
 
@@ -96,5 +116,8 @@ caesar_menu.add_command(label="Encrypt", command= lambda: e.create_caesar(root, 
 caesar_menu.add_command(label="Decrypt", command= lambda: e.create_caesar(root, text, e.DIRECTION.Decryption))
 
 #encryption_menu.add_command(label="Rail Fence")
+
+# basic function calls
+f.change_font(text, mainloop=False)
 
 root.mainloop()
