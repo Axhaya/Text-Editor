@@ -119,6 +119,8 @@ class RailFence(Toplevel):
         rail:int = 0
         increment:int = 1
         for c in text:
+            if c == " ":
+                continue
             fence[rail].append(c)
 
             rail += increment
@@ -129,12 +131,16 @@ class RailFence(Toplevel):
         for r in fence:
             new_text += "".join(str(x).replace("\n","") for x in r)
 
-        offset:int = 0
-        for c in range(len(text)-1, -1, -1):
+        indexes = []
+        for c in range(len(text)):
             if text[c] == " ":
-                new_text = new_text[:c] + " " + new_text[c-1:]
+                indexes.append(c)
         
-        return new_text
+        space_insert = list(new_text)
+        for i in indexes:
+            space_insert.insert(i," ")
+        
+        return "".join(space_insert)
 
     def decrypt(self, text:str, rails:int) -> str:
         pass
