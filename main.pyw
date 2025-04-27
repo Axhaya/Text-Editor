@@ -116,7 +116,10 @@ encryption_menu.add_cascade(label="Caesar", menu=caesar_menu)
 caesar_menu.add_command(label="Encrypt", command= lambda: e.create_caesar(root, text, e.DIRECTION.Encryption))
 caesar_menu.add_command(label="Decrypt", command= lambda: e.create_caesar(root, text, e.DIRECTION.Decryption))
 
-#encryption_menu.add_command(label="Rail Fence")
+rail_fence_menu = Menu(encryption_menu, tearoff=False)
+encryption_menu.add_cascade(label="Rail Fence", menu=rail_fence_menu)
+rail_fence_menu.add_command(label="Encrypt", command= lambda: e.create_rail_fence(root, text, e.DIRECTION.Encryption))
+rail_fence_menu.add_command(label="Decrypt", command= lambda: e.create_rail_fence(root, text, e.DIRECTION.Decryption))
 
 # basic function calls
 f.change_font(text, mainloop=False)
