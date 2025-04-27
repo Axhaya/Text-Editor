@@ -110,6 +110,18 @@ class RailFence(Toplevel):
         
         self.destroy()
     
+    def space_insert(self, original:str, new:str) -> str:
+        indexes = []
+        for c in range(len(original)):
+            if original[c] == " ":
+                indexes.append(c)
+        
+        space_insert = list(new)
+        for i in indexes:
+            space_insert.insert(i," ")
+        
+        return "".join(space_insert)
+
     def encrypt(self, text:str, rails:int) -> str:
         fence = []
 
@@ -130,20 +142,45 @@ class RailFence(Toplevel):
         new_text:str = ""
         for r in fence:
             new_text += "".join(str(x).replace("\n","") for x in r)
-
-        indexes = []
-        for c in range(len(text)):
-            if text[c] == " ":
-                indexes.append(c)
         
-        space_insert = list(new_text)
-        for i in indexes:
-            space_insert.insert(i," ")
-        
-        return "".join(space_insert)
+        return self.space_insert(text, new_text)
 
-    def decrypt(self, text:str, rails:int) -> str:
-        pass
+    def decrypt(self, text:str, amount_rails:int) -> str:
+        clean_text = text.replace(" ","").replace("\n","")
+        length = len(clean_text)
+
+        fence = [0 for x in range(amount_rails)]
+
+        # get rail char amount
+        rail:int = 0
+        increment:int = 1
+        for i in range(length):
+            fence[rail] += 1
+
+            rail += increment
+            if rail in [0, len(fence)-1]:
+                increment *= -1
+
+        text_blocks = {}
+        last_amount_chars:int = 0
+        for i in range(amount_rails):
+           text_blocks[i] = clean_text[last_amount_chars:last_amount_chars+fence[i]]
+           last_amount_chars += fence[i]
+        
+        new_text:str = ""
+
+        rail = 0
+        increment = 1
+        for i in range(length):
+            c:str = text_blocks[rail][0]
+            new_text += c
+            text_blocks[rail] = text_blocks[rail][1:]
+
+            rail += increment
+            if rail in [0, len(fence)-1]:
+                increment *= -1
+        
+        return self.space_insert(text, new_text)
 
 rail_fence_instance:RailFence = None
 
